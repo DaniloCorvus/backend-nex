@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+
+    protected $hidden = ['pivot'];
+    
     use HasFactory;
     protected $fillable = [
         'name', 'limit', 'description'

@@ -23,10 +23,6 @@ class EmployeeObserver
      * @param  \App\Models\Employee  $employee
      * @return void
      */
-    public function updated(Employee $employee)
-    {
-        $employee->roles()->sync(request()->get('rol'));
-    }
 
     /**
      * Handle the Employee "deleted" event.
@@ -34,9 +30,9 @@ class EmployeeObserver
      * @param  \App\Models\Employee  $employee
      * @return void
      */
-    public function deleted(Employee $employee)
+    public function deleting(Employee $employee)
     {
-        //
+        $employee->roles()->detach();
     }
 
     /**

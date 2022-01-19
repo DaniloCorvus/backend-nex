@@ -21,7 +21,9 @@ class EmployeeRepository
 
     public function all()
     {
-        return $this->model->with('area', 'roles')->paginate(10, ['*'], 'page', request()->get('page', 1));
+        return $this->model->with(['area', 'roles' => function ($q) {
+            $q->select('id');
+        }])->paginate(10, ['*'], 'page', request()->get('page', 1));
     }
 
     public function get()
@@ -50,9 +52,17 @@ class EmployeeRepository
         $employee->area_id = $data['area'];
         $employee->boletin = $data['news'];
         $employee->descripcion = $data['description'];
-        $employee->save();
+        $employee->update();
+
+        $this->assingRol($employee);
 
         return $employee;
+    }
+
+    public function assingRol($employee)
+    {
+        $employee->roles()->detach();
+        $employee->roles()->attach(request()->get('rol'));
     }
 
     public function forSelect()
